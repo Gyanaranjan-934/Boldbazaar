@@ -1,0 +1,2 @@
+# Boldbazaar
+Django ecommerce application
