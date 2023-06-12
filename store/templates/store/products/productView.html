@@ -145,10 +145,10 @@
         
       <div class="col-md-6">
         {% if product.average_rating %}
-        <span class="badge bg-primary rounded-pill">{{ product.average_rating|stringformat:'.1f' }}</span>
+        <span class="badge bg-primary rounded-pill">{{ product.average_rating|stringformat:'.1f' }} <i class="fa fa-star"></i></span>
         {% endif %}
         {% if product.main_tag %}
-        <span class="badge bg-success rounded-pill float-end">{{ product.main_tag }}</span>
+        <span class="badge bg-success mt-1 rounded-pill float-end">{{ product.main_tag }}</span>
         {% endif %}
         <div id="product-carousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
@@ -241,7 +241,7 @@
                         {% for rating in "12345" %}
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="rating" id="rating{{ rating }}" value="{{ rating }}">
-                            <label class="form-check-label" for="rating{{ rating }}">{{ rating }}</label>
+                            <label class="form-check-label" for="rating{{ rating }}">{{ rating }}<i class="fa fa-star"></i></label>
                         </div>
                         {% endfor %}
                     </div>
@@ -271,7 +271,7 @@
                       {{review.rating}} <span class="star">&#9733;</span>            
                   </div>
                   <p>{{ review.review }}</p>
-                  <small class="text-muted">Rated on {{ review.created_at }}</small>
+                  <small class="text-muted">Rated on {{ review.created_at|naturaltime }}</small>
                 </div>
               </div>
               <hr>

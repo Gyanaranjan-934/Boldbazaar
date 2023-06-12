@@ -46,7 +46,7 @@
         {% for item in wishlist %}
         <div class="col">
             <div class="card h-100 shadow">
-                <img src="{{ item.product.product_image.url }}" class="card-img-top" alt="product_image" style="height: 200px; object-fit: fit;">
+                <img src="{{ item.product.product_image.url }}" class="card-img-top" alt="product_image" style="height: 200px; width: 100%; object-fit: scale-down;" >
                 
                 <div class="card-body">
                     <h5 class="card-title">{{ item.product.name }}</h5>

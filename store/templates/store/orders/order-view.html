@@ -54,7 +54,7 @@
                                 <tbody>
                                     {% for item in orderItems %}
                                         <tr>
-                                            <td><a href="{% url 'productView' item.product.category.slug item.product.slug  %}"><img src="{{ item.product.product_image.url }}" alt="img" style="height:50px;width: 50px;" ></a></td>
+                                            <td><a href="{% url 'productView' item.product.category.slug item.product.slug  %}"><img src="{{ item.product.product_image.url }}" alt="img" style="height: 40px; width: 100%; object-fit: scale-down;"  ></a></td>
                                             <td>{{item.product.name}}</td>
                                             <td>{{item.quantity}} Pcs.</td>
                                             <td>{{item.price}}</td>

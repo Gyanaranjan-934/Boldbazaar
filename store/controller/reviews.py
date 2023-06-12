@@ -18,18 +18,23 @@ def postReview(request,p_id):
         rating  = request.POST.get('rating')
         reviewText = request.POST.get('review')
         product = Product.objects.get(id=p_id)
-        if product:
-            order = Order.objects.filter(user=request.user, orderitem__product_id=product.id).first()
-            if order:
-                Rating.objects.create(user=request.user, product=product, rating=rating,review=reviewText)
-                update_average_rating(product)
-                messages.success(request,'Thank you for your feedback')
+        reviews = Rating.objects.filter(product=product,user=request.user)
+        if not reviews:
+            if product:
+                order = Order.objects.filter(user=request.user, orderitem__product_id=product.id).first()
+                if order:
+                    Rating.objects.create(user=request.user, product=product, rating=rating,review=reviewText)
+                    update_average_rating(product)
+                    messages.success(request,'Thank you for your feedback')
+                else:
+                    messages.warning(request,'You have not purchased the product yet!')
+                url = reverse('productView', args=[product.category.slug, product.slug])
+                return redirect(url)
             else:
-                messages.warning(request,'You have not purchased the product yet!')
-            url = reverse('productView', args=[product.category.slug, product.slug])
-            return redirect(url)
+                messages.warning(request,'Product not found')
+                return redirect(request.META.get('HTTP_REFERER'))
         else:
-            messages.warning(request,'Product not found')
+            messages.warning(request,'You have alredy reviewed the product')
             return redirect(request.META.get('HTTP_REFERER'))
     else:
         messages.error(request,'You are not logged in')

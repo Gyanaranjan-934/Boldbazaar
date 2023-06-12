@@ -17,7 +17,7 @@ def addToCart(request):
                     if product_check.quantity >= prod_qty:
                         Cart.objects.create(user=request.user, product_id=prod_id,product_qty=prod_qty)
                         messages.success(request, 'Product added successfully')
-                        
+                        return redirect('viewCart')
                     else:
                         messages.warning(request, f'Only {product_check.quantity} quantity available')
             else:

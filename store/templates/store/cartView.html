@@ -19,7 +19,7 @@
                         {% for item in cart %}
                         <div class="row text-center product_data">
                             <div class="col-md-2 my-auto">
-                                <img src="{{item.product.product_image.url}}" height="70%" width="70%" alt="image">
+                                <a href="{% url 'productView' item.product.category.slug item.product.slug %}"><img src="{{item.product.product_image.url}}" height="70%" width="70%" alt="image"></a>
                             </div>
                             <div class="col-md-3 my-auto">
                                 <h6>{{item.product.name}}</h6>

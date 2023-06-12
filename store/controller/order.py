@@ -12,7 +12,7 @@ def viewOrderList(request):
     return render(request,'store/orders/my-orders.html', context)
 
 def viewOrder(request,t_no):
-    order = Order.objects.filter(tracking_no = t_no).filter(user=request.user).first()
+    order = Order.objects.filter(tracking_no = t_no,user=request.user).first()
     orderItems = OrderItem.objects.filter(order=order)
     context = {
         'orderItems': orderItems,
