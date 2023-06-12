@@ -1,0 +1,154 @@
+{% extends "store/layouts/main.html" %}
+
+{% block paths %}
+
+<div class="py-3 bg-primary ">
+    <div class="container">
+        <a class="text-white" href="{% url 'home' %}">Home</a> / 
+        <a class="text-white" href="{% url 'collections' %}">Collections</a> / 
+        <a class="text-white" href="{% url 'collectionsView' category_name.slug %}">{{ category_name.name }}</a>
+    </div>    
+</div>  
+{% endblock paths %}
+
+{% block content %}
+
+
+<div class="container-fluid ">
+    <div class="row mt-4">
+        <div class="col-md-3" >
+            <!-- Filter Container -->
+            <form method="post" action="{% url 'collectionsView' category_name.slug %}">
+                {% csrf_token %}
+                <div class="filter-container">
+
+                    <button type="submit" class="btn btn-primary mb-2">Apply</button>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="card-title">Sort by</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort_by" id="sort-by-price-high" value="price-high">
+                                <label class="form-check-label" for="sort-by-price-high">
+                                    Price: (High to Low)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort_by" id="sort-by-price-low" value="price-low">
+                                <label class="form-check-label" for="sort-by-price-low">
+                                    Price: (Low to High)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort_by" id="sort-by-ratings" value="ratings">
+                                <label class="form-check-label" for="sort-by-ratings">
+                                    Popular
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort_by" id="sort-by-new" value="new_arrival">
+                                <label class="form-check-label" for="sort-by-new">
+                                    What's New
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="card-title">By Price</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                {% for price_range in priceRanges %}
+                                <input type="radio" name="price_filter" id="{{ price_range.name }}" value="{{ price_range.name }}">
+                                <label for="{{ price_range.name }}">{{ price_range.name }}</label>
+                                <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="card-title">By Brands</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                <ul class="list-unstyled">
+                                    {% for brand in brands %}
+                                    <li>
+                                        <input class="form-check-input" type="checkbox" name="brand_filter" value="{{ brand.name }}" id="{{brand.name}}">
+                                        <label class="form-check-label" for="{{brand.name}}">
+                                            {{brand.name}}
+                                        </label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </form>
+            
+        </div>
+
+        <div class="col-md-9">
+            <!-- Product Container -->
+            <div class="product-list-container">
+                <div class="scrollable-content">
+                    <div class="container">
+                        <div class="row">
+                            {% if products %}
+                            {% for item in products %}
+                                <div class="col-md-12 ">
+                                    <div class="card mt-2">
+                                        <a href="{% url 'productView' item.category.slug item.slug %}">
+                                            <div class="card-body h-100">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="category-image">
+                                                            
+                                                            {% if item.main_tag %}
+                                                            <span class="badge bg-success rounded-pill ">{{ item.main_tag }}</span>
+                                                            {% endif %}
+                                                            <img src="{{ item.product_image.url }}" alt="product image " style="height: 200px; width: 100%; object-fit: scale-down;" class="w-100">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <h4 class="card-title">{{ item.name }} 
+                                                                {% if item.average_rating %}
+                                                                    <span class="badge bg-primary rounded-pill float-end">{{ item.average_rating|stringformat:'.1f' }} <i class="fa fa-star"></i> </span>
+                                                                {% endif %}
+                                                            </h4>
+                                                            
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <span class="text-success"><b style="font-size: 30px">&#8377; {{ item.selling_price | stringformat:'d' }}</b></span>
+                                                                    <span class="text-muted"><s>&#8377; {{ item.original_price | stringformat:'d' }}</s></span>
+                                                                    <p class="card-text mt-2">{{ item.small_description }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% else %}
+                                <h4>No product available</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+{% endblock content %}

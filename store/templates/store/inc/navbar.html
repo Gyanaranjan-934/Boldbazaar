@@ -1,0 +1,62 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+    <div class="container">
+      <img src="{% static '/images/logo-no-background.svg' %}" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
+      <a class="navbar-brand" href="{% url 'home' %}">BoldBazaar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span> 
+      </button>
+      <div class="search-bar">
+        <form action="{% url 'searchProduct' %}" method="">
+          
+          <div class="input-group">
+            <input type="search" required name="product-search" class="form-control" id="searchproducts" placeholder="Search">
+            <button type="submit" class="input-group-text" ><i class="fa fa-search"></i></button>
+          </div>
+        </form>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'collections' %}active{% endif %}" href="{% url 'collections' %}">Collections</a>
+          </li>
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'viewCart' %}active{% endif %}" href="{% url 'viewCart' %}">Cart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'viewWishList' %}active{% endif %}" href="{% url 'viewWishList' %}">Wishlist</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'myorders' %}active{% endif %}" href="{% url 'myorders' %}">Orders</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logoutpage' %}">Logout</a>
+          </li>
+          {% else %}
+          <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <button class="btn btn-dark-outline dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Login
+                </button>
+                <ul class="dropdown-menu dropdown-menu">
+                  <li><a class="dropdown-item {% if request.resolver_match.url_name == 'loginpage' %}active{% endif %}" href="{% url 'loginpage' %}">Login</a></li>
+                  <li><a class="dropdown-item {% if request.resolver_match.url_name == 'register' %}active{% endif %}" href="{% url 'register' %}">Register</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          
+          {% endif %}
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+  

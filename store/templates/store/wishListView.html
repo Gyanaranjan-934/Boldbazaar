@@ -1,0 +1,84 @@
+{% extends "store/layouts/main.html" %}
+{% load humanize %}
+{% block content %}
+<div class="py-3 bg-primary">
+    <div class="container">
+        <a class="text-white" href="{% url 'home' %}">Home</a> /
+        <a class="text-white" href="{% url 'viewCart' %}">Cart</a>
+    </div>
+</div>
+
+
+{% comment %} <div class="container text-center">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+        {% if wishlist %}
+        {% for item in wishlist %}
+        <div class="col">
+            <div class="card h-100 shadow">
+                <img src="{{ item.product.product_image.url }}" class="card-img-top" alt="product_image" style="height: 200px; object-fit: fit;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.product.name }}</h5>
+                    <p class="card-text">{{ item.product.small_description|truncatechars:50 }}</p>
+                    {% if item.product.quantity > 0 %}
+                        <a href="{% url 'productView' item.product.category.slug item.product.slug %}" class="btn btn-outline-success btn-sm">Buy Now<i class="fa fa-thunder"></i></a>
+                    {% else %}
+                        <label for="" class="badge bg-danger">Out of Stock</label>
+                    {% endif %}
+                    <form action="{% url 'deleteWishlistItem' item.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-danger delete-wishlist-item btn-sm"><i class="fa fa-trash"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+        {% else %}
+        <h4>Your wishlist is empty</h4>
+        {% endif %}
+        
+    </div>
+</div> {% endcomment %}
+
+<div class="container py-5">
+    <h4 class="text-center">Wishlist</h4>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 gy-4">
+        {% if wishlist %}
+        {% for item in wishlist %}
+        <div class="col">
+            <div class="card h-100 shadow">
+                <img src="{{ item.product.product_image.url }}" class="card-img-top" alt="product_image" style="height: 200px; object-fit: fit;">
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.product.name }}</h5>
+                    <p class="card-text">{{ item.product.small_description|truncatechars:50 }}</p>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        {% if item.product.quantity > 0 %}
+                            <span class="card-price fw-bold">&#8377;{{ item.product.selling_price|floatformat:2 }}</span>
+                            <a href="{% url 'productView' item.product.category.slug item.product.slug %}" class="btn btn-outline-success btn-sm">Buy Now <i class="fa fa-thunder"></i></a>
+                        {% else %}
+                            <label for="" class="badge bg-danger">Out of Stock</label>
+                        {% endif %}
+                        <form action="{% url 'deleteWishlistItem' item.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-danger delete-wishlist-item btn-sm"><i class="fa fa-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h4>Your wishlist is empty</h4>
+        {% endif %}
+    </div>
+</div>
+
+
+
+{% comment %} {{wishlist}} {% endcomment %}
+
+
+
+
+
+{% endblock content %}

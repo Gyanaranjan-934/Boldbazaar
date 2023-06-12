@@ -1,0 +1,154 @@
+{% extends 'store/layouts/main.html' %}
+{% load static %}
+{% block content %}
+    {% include 'store/inc/slider.html' %}
+    
+    <section id="bank-offers" class="py-4">
+        <div class="container">
+            <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <img src="{% static '/images/slide-01.jpg' %}" alt="" srcset="">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <img src="{% static '/images/slide-02.jpg' %}" alt="" srcset="">
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-15">
+                <h1>Trending</h1>
+                <hr>
+                <div class="row ">
+                    {% for item in trending_products %}
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                          <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <h5 class="card-title">{{ item.name }}</h5>
+                              <p class="card-text font-weight-bold">{{ item.selling_price }}</p>
+                            </div>
+                            <a href="{% url 'productView' item.category.slug item.slug %}" class="btn btn-primary float-center">Buy Now</a>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div> 
+    {% if bestseller_products %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-15">
+                <h1>Best selling</h1>
+                <hr>
+                <div class="row ">
+                    {% for item in bestseller_products %}
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                          <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <h5 class="card-title">{{ item.name }}</h5>
+                              <p class="card-text font-weight-bold">{{ item.selling_price }}</p>
+                            </div>
+                            <a href="{% url 'productView' item.category.slug item.slug %}" class="btn btn-primary float-center">Buy Now</a>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div> 
+    {% endif %}
+
+    {% if hot_products %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-15">
+                <h1>Hot Deals</h1>
+                <hr>
+                <div class="row ">
+                    {% for item in hot_products %}
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                          <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <h5 class="card-title">{{ item.name }}</h5>
+                              <p class="card-text font-weight-bold">{{ item.selling_price }}</p>
+                            </div>
+                            <a href="{% url 'productView' item.category.slug item.slug %}" class="btn btn-primary float-center">Buy Now</a>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div> 
+    {% endif %}
+    
+    {% if new_products %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-15">
+                <h1>Just Arrived</h1>
+                <hr>
+                <div class="row ">
+                    {% for item in new_products %}
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                          <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <h5 class="card-title">{{ item.name }}</h5>
+                              <p class="card-text font-weight-bold">{{ item.selling_price }}</p>
+                            </div>
+                            <a href="{% url 'productView' item.category.slug item.slug %}" class="btn btn-primary float-center">Buy Now</a>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div> 
+    {% endif %}
+    
+
+    {% endblock content %}
+
+{% block scripts %}
+<script>
+    $('.owl-carousel').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:5
+            }
+        }
+    })
+</script>
+{% endblock scripts %}

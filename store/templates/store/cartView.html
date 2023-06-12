@@ -1,0 +1,72 @@
+{% extends "store/layouts/main.html" %}
+{% load humanize %}
+{% block content %}
+<div class="py-3 bg-primary">
+    <div class="container">
+        <a class="text-white" href="{% url 'home' %}">Home</a> /
+        <a class="text-white" href="{% url 'viewCart' %}">Cart</a>
+    </div>
+</div>
+
+
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-body">
+                        {% if cart %}
+                        {% for item in cart %}
+                        <div class="row text-center product_data">
+                            <div class="col-md-2 my-auto">
+                                <img src="{{item.product.product_image.url}}" height="70%" width="70%" alt="image">
+                            </div>
+                            <div class="col-md-3 my-auto">
+                                <h6>{{item.product.name}}</h6>
+                            </div>
+                            <div class="col-md-2 my-auto">
+                                <h6>&#8377; {{ item.product.selling_price|stringformat:'d'|intcomma }}</h6>
+
+                            </div>
+                            <div class="col-md-3 my-auto d-flex align-items-center justify-content-center">
+                                <form method="POST" action="{% url 'updateCart' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="prod_id" value="{{ item.product_id }}">
+                                    {% if item.product.quantity >= item.product_qty %}
+                                    <div class=" input-group text-center mb-3" style="width:130px;">
+                                        <button type="submit"
+                                            class="input-group-text changeQuantity decrement-button">-</button>
+                                        <input type="text" name="product_qty" class="form-control qty-input text-center"
+                                            value="{{ item.product_qty }}">
+                                        <button type="submit"
+                                            class="input-group-text changeQuantity increment-button">+</button>
+                                    </div>
+                                    {% else %}
+                                    <h6>Out of Stock</h6>
+                                    {% endif %}
+                                </form>
+                            </div>
+                            <div class="col-md-2 my-auto">
+                                <form method="POST" action="{% url 'deleteCartItem' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="prod_id" value="{{ item.product_id }}">
+                                    <button type="submit" class="btn btn-danger delete-cart-item"><i class="fa fa-trash"></i></button>
+                                </form>
+                            </div>
+
+                        </div>
+                        <hr>
+                        {% endfor %}
+                        <a href="{% url 'checkout' %}" class="btn btn-outline-success float-end">Place Order</a>
+                        <a href="{% url 'collections' %}" class="btn btn-outline-warning float-start">Shop Now</a>
+                        {% else %}
+                        <h4>Cart is Empty</h4>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,154 @@
+{% extends "store/layouts/main.html" %}
+{% load humanize %}
+{% block content %}
+<div class="py-3 bg-primary">
+    <div class="container">
+        <a class="text-white" href="{% url 'home' %}">Home</a> /
+        <a class="text-white" href="{% url 'viewCart' %}">Cart</a> /
+        <a class="text-white" href="{% url 'checkout' %}">Checkout</a>
+    </div>
+</div>
+
+<div class="container my-3">
+    <form action="{% url 'placeorder' %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-7 ">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h6>Basic Details</h6>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="firstname"  class="form-label">First Name</label>
+                                <input type="text" required value="{{ request.user.first_name }}" class="form-control" placeholder="First Name" name="firstname" id="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastname"  class="form-label">Last Name</label>
+                                <input type="text" required value="{{ request.user.last_name }}" class="form-control" placeholder="Last Name" name="lastname" id="">
+                            </div>
+                            
+                            <div class="col-md-6 mt-2">
+                                <label for=""  class="form-label">Email</label>
+                                <input type="email" required value="{{ request.user.email }}" class="form-control" name="email" id="" aria-describedby="emailHelpId" placeholder="abc@mail.com">     
+                            </div>
+                            
+                            <div class="col-md-6 mt-2">
+                                <label for="phone"  class="form-label">Phone</label>
+                                <input type="text" required value="{{ userprofile.phone }}" class="form-control" placeholder="Phone" name="phone" id="">
+                            </div>
+                            
+                            <div class="col-md-6 mt-2">
+                                <label for="city"  class="form-label">City</label>
+                                <input type="text" required value="{{ userprofile.city }}" class="form-control" placeholder="city" name="city" id="">
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <label for="state"  class="form-label">State</label>
+                                <input type="text" required value="{{ userprofile.state }}" class="form-control" placeholder="state" name="state" id="">
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <label for="country"  class="form-label">Country</label>
+                                <input type="text" required value="{{ userprofile.country }}" class="form-control" placeholder="country" name="country" id="">
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <label for="pincode"  class="form-label">Pincode</label>
+                                <input type="text" required value="{{ userprofile.pincode }}" class="form-control" placeholder="pincode" name="pincode" id="">
+                            </div>
+                            <div class="mt-3">
+                                <label for=""  class="form-label">Address</label>
+                                <textarea required class="form-control" name="address" placeholder="Address e.g, Plot No. , House No." id="" rows="3">{{userprofile.address}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h6>Order Summary</h6>
+                        <hr>
+                        {% if cartitems %}  
+                            <table class="table table-stripeds table-bordereds">
+                                <thead>
+                                    <tr>
+                                        <th>Product : </th>
+                                        <th>Qty : </th>
+                                        <th>Price : </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cartitems %}
+                                        <tr>
+                                            <td>
+                                                <img src="{{item.product.product_image.url}}" class="me-2" style="width: 30px; height: 30px;" alt="{{item.product.name}}" />
+                                                {{item.product.name}}
+                                            </td>
+                                            <td>{{item.product_qty}}</td>
+                                            <td>&#8377; {{item.product.selling_price|stringformat:'d'|intcomma}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <h6>Total
+                                <span class="float-end">&#8377; <b>{{total_price|stringformat:'d'|intcomma}}</b></span>
+                            </h6>
+                            <input type="hidden" name="payment_mode" value="COD">
+                            {% comment %} <input type="hidden" name="total_price" value="total_price"> {% endcomment %}
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-success w-100">Cash on Delivery</button>
+                                <button type="button" id="rzp-button1" class="btn btn-primary w-100 mt-2 payWithRazorpay">Pay with Razorpay</button>
+                                <div class="mt-2"  id="paypal-button-container"></div>
+                            </div>
+                        {% else %}
+                            <h4>Your cart is empty</h4>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AZVcV5d_paEHzdRe2ED-wZL6eWf2Ee4rTB-m75j0eWo6A1buLklU36wuIGKqYzlYlHAhyMoRO3zi7ztL&currency=USD"></script>
+
+<script>
+    // Render the PayPal button
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            // This function sets up the details of the transaction, such as the amount and currency
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '{{total_price|stringformat:'d'|intcomma}}' // Total amount of the payment
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            // This function captures the transaction details after payment approval
+            return actions.order.capture().then(function(orderData) {
+                // Perform your logic here (e.g., update order status, generate invoice, etc.)
+                // You can access the transaction details using the 'details' object
+                console.log('Capture result',orderData, JSON.stringify(orderData,null,2));
+                var transaction = orderData.purchase_units[0].payments.captures[0];
+                alert('Transaction '+transaction.status+': '+transaction.id+ '\n\n See consol for all available transaction details' );
+                // Redirect to a success page or display a success message
+                // window.location.href = '/payment-success';
+            });
+        },
+        onCancel: function(data) {
+            // Handle payment cancellation
+            console.log('Payment cancelled');
+            // Redirect to a cancellation page or display a cancellation message
+            window.location.href = '/payment-cancelled';
+        }
+    }).render('#paypal-button-container');
+</script>
+
+
+{% endblock scripts %}

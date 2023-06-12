@@ -1,0 +1,30 @@
+.whatsapp_chat {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9999;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.whatsapp_chat:hover {
+    opacity: 1;
+}
+
+.whatsapp_chat img {
+    width: 60px;
+}
+
+
+.search-bar{
+    width: 40% !important;
+    margin-left: auto;
+}
+
+.footer {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+}
