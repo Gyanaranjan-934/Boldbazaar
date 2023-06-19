@@ -247,9 +247,18 @@
                     </div>
                 <div class="form-group">
                   <label for="review">Review:</label>
-                  <textarea class="form-control" id="review" name="review" rows="4"></textarea>
+                  <textarea class="form-control" id="review" name="review" rows="4">{{ user_review.review }}</textarea>
                 </div>
-                <button type="submit" class="btn btn-primary mt-2 float-end">Submit</button>
+                <a href="{{ request.META.HTTP_REFERER }}" class="btn mt-2 btn-secondary float-start">Cancel</a>
+                {% if user_review %}
+                <div class="mb-2">
+                    <a href="{% url 'deleteReview' user_review.id %}" class="btn mt-2 btn-danger float-end">Delete</a>
+                    <button type="submit" class="btn btn-primary mt-2 mr-2 float-end">Edit</button>
+                </div>
+                
+                {% else %}
+                <button type="submit" class="btn btn-primary mt-2 float-end">Save</button>
+                {% endif %}
               </form>
             </div>
           </div>
@@ -271,7 +280,11 @@
                       {{review.rating}} <span class="star">&#9733;</span>            
                   </div>
                   <p>{{ review.review }}</p>
+                  {% if review.created_at == review.updated_at %}
                   <small class="text-muted">Rated on {{ review.created_at|naturaltime }}</small>
+                  {% else %}
+                  <small class="text-muted">Rated on {{ review.updated_at|naturaltime }}</small>
+                  {% endif %}
                 </div>
               </div>
               <hr>

@@ -130,11 +130,13 @@ def productView(request,cate_slug,prod_slug):
                 other_reviews = reviews.exclude(user=request.user)
                 reviews = list(user_review) + list(other_reviews)
             discount_percentage = ((product.original_price - product.selling_price) / product.original_price) * 100
+            user_review = Rating.objects.filter(product=product,user=request.user).first()
             context = {
                 'product':product,
                 'title':(str)(product.name),
                 'reviews':reviews,
-                'discount_percentage':discount_percentage
+                'discount_percentage':discount_percentage,
+                'user_review':user_review
             }
         else:
             messages.warning(request,"No such product found")

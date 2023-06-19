@@ -17,8 +17,11 @@ def postReview(request,p_id):
     if request.method == 'POST' and request.user.is_authenticated:
         rating  = request.POST.get('rating')
         reviewText = request.POST.get('review')
+        if rating == None and reviewText == '':
+            messages.error(request,'All field cannot be blank')
+            return redirect(request.META.get('HTTP_REFERER'))
         product = Product.objects.get(id=p_id)
-        reviews = Rating.objects.filter(product=product,user=request.user)
+        reviews = Rating.objects.filter(product=product,user=request.user).first()
         if not reviews:
             if product:
                 order = Order.objects.filter(user=request.user, orderitem__product_id=product.id).first()
@@ -34,14 +37,32 @@ def postReview(request,p_id):
                 messages.warning(request,'Product not found')
                 return redirect(request.META.get('HTTP_REFERER'))
         else:
-            messages.warning(request,'You have alredy reviewed the product')
+            if product:
+                reviews.review = reviewText
+                reviews.rating = rating
+                reviews.save()
+                update_average_rating(product)
+                messages.success(request,'Edited successfully')
+                url = reverse('productView', args=[product.category.slug, product.slug])
+                return redirect(url)
+            else:
+                messages.warning(request,'Product not found')
+                return redirect(request.META.get('HTTP_REFERER'))
+            
             return redirect(request.META.get('HTTP_REFERER'))
     else:
         messages.error(request,'You are not logged in')
         return redirect('loginpage')
 
 
-
+def deleteReview(request,r_id):
+    rating = Rating.objects.get(id=r_id)
+    if rating:
+        rating.delete()
+        messages.success(request,'Deleted successfully')
+    else:
+        messages.error(request,'Review doesnt exist')
+    return redirect(request.META.get('HTTP_REFERER'))
             
         
         

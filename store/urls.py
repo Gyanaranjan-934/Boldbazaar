@@ -33,4 +33,5 @@ urlpatterns = [
     
     
     path("post-review/<str:p_id>",reviews.postReview,name='postReview'),
+    path("delete-review/<str:r_id>",reviews.deleteReview,name='deleteReview'),
 ]
