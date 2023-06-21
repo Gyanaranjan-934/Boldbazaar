@@ -25,7 +25,6 @@
                                     <th>Order Date</th>
                                     <th>Tracking No.</th>
                                     <th>Total Price</th>
-                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             
@@ -36,7 +35,6 @@
                                     <td>{{item.created_at}}</td>
                                     <td>{{item.tracking_no}}</td>
                                     <td>{{item.total_price}}</td>
-                                    <td>{{item.status}}</td>
                                     <td>
                                         <a href="{% url 'orderView' item.tracking_no %}" class="btn btn-primary">View</a>
                                     </td>

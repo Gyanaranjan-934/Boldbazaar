@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 @login_required(login_url='loginpage')    
 def viewOrderList(request):
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user).order_by('-id')
     context = {'orders':orders,'title':"My Orders"}
     return render(request,'store/orders/my-orders.html', context)
 

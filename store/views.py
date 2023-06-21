@@ -51,21 +51,28 @@ def collections(request):
 def collectionsView(request, slug):
     if Category.objects.filter(slug=slug, status=0):
         
-        products = Product.objects.filter(category__slug=slug)
-        brands = Brand.objects.all()
+        from django.db.models import Q
 
-        if request.method == 'POST':
+
+        products = Product.objects.filter(category__slug=slug).order_by('-average_rating')
+        brand_tags = products.values_list('tags__name', flat=True).distinct()
+        brands = Brand.objects.filter(name__name__in=brand_tags).distinct()
+
+
+
+        if request.method == 'GET':
             # Apply filters based on user-selected options
-            price_filter = request.POST.get('price_filter')
-            
+            price_filter = request.GET.get('price_filter')
 
             nonecount=0
             
-            brand_filters = request.POST.getlist('brand_filter')
+            brand_filters = request.GET.getlist('brand_filter')
             
-            sort_by = request.POST.get('sort_by')
-            if price_filter is None and sort_by is None and brand_filters is None:
-                messages.error(request,"Select a filter first")
+            sort_by = request.GET.get('sort_by')
+            
+            gender_filter = request.GET.get('gender_filter')
+            if gender_filter:
+                products = products.filter(tags__name__in=[gender_filter])
 
             if price_filter:
                 # Apply price filter logic based on the selected price range
@@ -88,7 +95,7 @@ def collectionsView(request, slug):
                 nonecount+=1
                 # Apply brand filter logic based on the selected brands
                 # Modify the queryset 'products' accordingly
-                
+            
                 
 
             if sort_by == 'price-high':

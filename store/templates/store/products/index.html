@@ -18,8 +18,8 @@
     <div class="row mt-4">
         <div class="col-md-3" >
             <!-- Filter Container -->
-            <form method="post" action="{% url 'collectionsView' category_name.slug %}">
-                {% csrf_token %}
+            <form action="{% url 'collectionsView' category_name.slug %}">
+                
                 <div class="filter-container">
 
                     <button type="submit" class="btn btn-primary mb-2">Apply</button>
@@ -87,7 +87,39 @@
                             </div>
                         </div>
                     </div>
-                    
+                    {% if category_name.slug == "clothings" %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="card-title">By Gender</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                <ul class="list-unstyled">
+                                    
+                                    <li>
+                                        <input class="form-check-input" type="checkbox" name="gender_filter" value="Men" id="Men">
+                                        <label class="form-check-label" for="Men">
+                                            Men
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <input class="form-check-input" type="checkbox" name="gender_filter" value="Women" id="Women">
+                                        <label class="form-check-label" for="Women">
+                                            Women
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <input class="form-check-input" type="checkbox" name="gender_filter" value="Kids" id="Kids">
+                                        <label class="form-check-label" for="Kids">
+                                            Kids
+                                        </label>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </form>
             
