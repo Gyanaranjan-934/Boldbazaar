@@ -250,14 +250,7 @@
                   <textarea class="form-control" id="review" name="review" rows="4">{{ user_review.review }}</textarea>
                 </div>
                 <a href="{% url 'productView' product.category.slug product.slug %}" class="btn mt-2 btn-secondary float-start">Cancel</a>
-                <div class="mb-2">
-                    {% if user_review %}
-                    <a href="{% url 'deleteReview' user_review.id %}" class="btn mt-2 btn-danger float-end">Delete</a>
-                    <button type="submit" class="btn btn-primary mt-2 mr-2 float-end">Edit</button>
-                    {% else %}
-                    <button type="submit" class="btn btn-primary mt-2 float-end">Save</button>
-                    {% endif %}
-                </div>
+                <button type="submit" class="btn btn-primary mt-2 float-end">Save</button>
               </form>
             </div>
           </div>

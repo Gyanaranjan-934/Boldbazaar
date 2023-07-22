@@ -29,7 +29,7 @@
                     {% for item in trending_products %}
                     <div class="col-md-3">
                         <div class="card h-100">
-                          <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
+                          <img src="{{ item.product_image.url }}" class="card-img-top mt-1" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
                           <div class="card-body">
                             <div class="d-flex justify-content-between">
                               <h5 class="card-title">{{ item.name }}</h5>
@@ -45,6 +45,33 @@
             </div>
         </div>
     </div> 
+    {% if recommended_products %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-15">
+                <h1>Recommended Products</h1>
+                <hr>
+                <div class="row ">
+                    {% for item in recommended_products %}
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                          <img src="{{ item.product_image.url }}" class="card-img-top mt-1" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <h5 class="card-title">{{ item.name }}</h5>
+                              <p class="card-text font-weight-bold">{{ item.selling_price }}</p>
+                            </div>
+                            <a href="{% url 'productView' item.category.slug item.slug %}" class="btn btn-primary float-center">Buy Now</a>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div> 
+    {% endif %}
     {% if bestseller_products %}
     <div class="container">
         <div class="row">
@@ -55,7 +82,7 @@
                     {% for item in bestseller_products %}
                     <div class="col-md-3">
                         <div class="card h-100">
-                          <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
+                          <img src="{{ item.product_image.url }}" class="card-img-top mt-1" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
                           <div class="card-body">
                             <div class="d-flex justify-content-between">
                               <h5 class="card-title">{{ item.name }}</h5>
@@ -83,7 +110,7 @@
                     {% for item in hot_products %}
                     <div class="col-md-3">
                         <div class="card h-100">
-                          <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
+                          <img src="{{ item.product_image.url }}" class="card-img-top mt-1" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
                           <div class="card-body">
                             <div class="d-flex justify-content-between">
                               <h5 class="card-title">{{ item.name }}</h5>
@@ -111,7 +138,7 @@
                     {% for item in new_products %}
                     <div class="col-md-3">
                         <div class="card h-100">
-                          <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
+                          <img src="{{ item.product_image.url }}" class="card-img-top mt-1" style="height: 100px; width: 100%; object-fit: scale-down;" alt="Product Image">
                           <div class="card-body">
                             <div class="d-flex justify-content-between">
                               <h5 class="card-title">{{ item.name }}</h5>

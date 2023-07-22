@@ -113,7 +113,7 @@ def placeorder(request):
         
         paymode = request.POST.get('payment_mode')
         if paymode == 'Razorpay':
-            return JsonResponse({'status':'Your order has been placed successfully\n Your payment id and order no. will be mailed soon'})
+            return JsonResponse({'status':'Your order has been placed successfully\n Please go to order section for order details'})
     return redirect('home')
 
 def viewOrders(request):

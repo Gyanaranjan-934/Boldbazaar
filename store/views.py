@@ -126,7 +126,7 @@ def collectionsView(request, slug):
         messages.warning(request, "No such category found")
         return redirect('collections')
    
-
+# @login_required
 def productView(request,cate_slug,prod_slug):
     if(Category.objects.filter(slug=cate_slug,status=0)):
         if(Product.objects.filter(slug=prod_slug,status=0)):
@@ -137,7 +137,6 @@ def productView(request,cate_slug,prod_slug):
                 other_reviews = reviews.exclude(user=request.user)
                 reviews = list(user_review) + list(other_reviews)
             discount_percentage = ((product.original_price - product.selling_price) / product.original_price) * 100
-            user_review = Rating.objects.filter(product=product,user=request.user).first()
             context = {
                 'product':product,
                 'title':(str)(product.name),
