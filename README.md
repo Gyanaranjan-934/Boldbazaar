@@ -26,7 +26,7 @@ This is a Django application that allows users to [provide a brief description o
 
    2. Clone the repository to your local machine using the following command:
       ```bash
-      git clone https://github.com/your-username/your-repo.git
+      git clone https://github.com/Gyanaranjan-934/Boldbazaar.git
    3. Navigate to the project directory:
       ```bash
       cd your-repo
