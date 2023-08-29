@@ -4,9 +4,9 @@ Django ecommerce application
 
 ## Description
 
-This is a Django application that allows users to [provide a brief description of your application's purpose and features].
+This is a Django application that allows users to buy product as per their demand.
 
-![Screenshot](/path/to/screenshot.png)
+Have a look at the demo of the project (https://youtu.be/bV9-9MUkxHs)
 
 ## Table of Contents
 
